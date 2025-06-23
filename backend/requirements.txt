@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+PyMuPDF
+pytesseract
+Pillow
+faiss-cpu
+sentence_transformers
+ollama
+numpy
