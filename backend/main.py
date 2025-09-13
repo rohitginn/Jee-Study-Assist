@@ -5,6 +5,9 @@ from sentence_transformers import SentenceTransformer
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import google.generativeai as genai  # <-- NEW
+from dotenv import load_dotenv
+load_dotenv()   # now os.getenv("GEMINI_API_KEY") will work
+
 
 # ---------- Config ----------
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
