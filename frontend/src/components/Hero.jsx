@@ -4,13 +4,27 @@ function Hero() {
   return (
     <section
       id="hero"
-      className="h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-blue-100 to-purple-200 pt-20 px-6"
+      className="h-screen w-screen flex flex-col items-center justify-center  bg-neutral-50 dark:bg-neutral-950
+      "
     >
-      <h1 className="text-5xl md:text-7xl font-bold text-blue-800 mb-6">
-        Welcome to <span className="text-purple-600 font-extrabold">AceJEE</span>
+      <h1
+        className="
+          z-10 mb-6 text-5xl md:text-7xl font-bold
+          text-blue-800 dark:text-blue-300
+        "
+      >
+        Welcome to{" "}
+        <span className="text-purple-600 dark:text-purple-400 font-extrabold">
+          AceJEE
+        </span>
       </h1>
 
-      <div className="text-xl md:text-2xl text-gray-700 mb-8">
+      <div
+        className="
+          z-10 mb-8 text-xl md:text-2xl
+          text-gray-700 dark:text-gray-300
+        "
+      >
         <Typewriter
           options={{
             strings: [
@@ -26,11 +40,17 @@ function Hero() {
 
       <a
         href="#questionForm"
-        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300"
+        className="
+          z-10 font-bold py-3 px-8 rounded-full shadow-lg
+          bg-blue-600 hover:bg-blue-700
+          dark:bg-blue-500 dark:hover:bg-blue-600
+          text-white transform hover:scale-105 transition duration-300
+        "
       >
         Ask Your Question
       </a>
     </section>
   );
 }
+
 export default Hero;

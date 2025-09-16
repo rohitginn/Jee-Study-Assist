@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+body {
+  @apply bg-white text-gray-900;
+}
+
+/* Dark theme */
+.dark body {
+  @apply bg-gray-950 text-orange-500;
+}

@@ -43,7 +43,7 @@ const QuestionForm = () => {
   return (
     <section
       id="questionForm"
-      className="pt-20 min-h-screen flex flex-col items-center justify-start gap-4 bg-gradient-to-br from-blue-100 to-purple-200 px-4 transition-all duration-500"
+      className="pt-20 min-h-screen flex flex-col items-center justify-start gap-4 bg-neutral-50 dark:bg-neutral-950 px-4 transition-all duration-500"
     >
       <form
         onSubmit={handleSubmit}
