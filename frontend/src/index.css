@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=SUSE+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Hanuman:wght@100..900&family=Iceberg&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -6,6 +12,22 @@
 /* src/index.css */
 html {
   scroll-behavior: smooth;
+}
+
+@theme {
+  --font-Zen: 'Zen Dots', cursive;
+  --font-SUSE: 'SUSE Mono', monospace;
+  --font-Source: 'Source Sans 3', sans-serif;
+  --font-Bricolage: 'Bricolage Grotesque', sans-serif;
+  --font-Hanuman: 'Hanuman', sans-serif;
+  --font-Iceberg: 'Iceberg', cursive;
+  --font-Figtree: 'Figtree', sans-serif;
+}
+
+.Iceberg {
+  font-family: "Iceberg", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 h1 {
@@ -49,7 +71,48 @@ h1 {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-}
+  --animate-shine: shine var(--duration) infinite linear;
+  @keyframes shine {
+  0% {
+    background-position: 0% 0%;
+    }
+  50% {
+    background-position: 100% 100%;
+    }
+  to {
+    background-position: 0% 0%;
+    }
+  }
+  --animate-aurora: aurora 8s ease-in-out infinite alternate
+;
+  @keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);
+    }
+  25% {
+    background-position: 50% 100%;
+    transform: rotate(5deg) scale(1.1);
+    }
+  50% {
+    background-position: 100% 50%;
+    transform: rotate(-3deg) scale(0.95);
+    }
+  75% {
+    background-position: 50% 0%;
+    transform: rotate(3deg) scale(1.05);
+    }
+  100% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);
+    }
+  }
+  --animate-gradient: gradient 8s linear infinite;
+  @keyframes gradient {
+  to {
+    background-position: var(--bg-size, 300%) 0;
+    }
+  }}
 
 :root {
   --radius: 0.625rem;
@@ -119,6 +182,183 @@ h1 {
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
+/* From Uiverse.io by StealthWorm */ 
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13rem;
+  overflow: hidden;
+  height: 3rem;
+  background-size: 300% 300%;
+  cursor: pointer;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  transition: 0.5s;
+  animation: gradient_301 5s ease infinite;
+  border: double 4px transparent;
+  background-image: linear-gradient(#212121, #212121),
+    linear-gradient(
+      137.48deg,
+      #ffdb3b 10%,
+      #fe53bb 45%,
+      #8f51ea 67%,
+      #0044ff 87%
+    );
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+#container-stars {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.5s;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+}
+
+strong {
+  z-index: 2;
+  font-family: "Source", sans-serif;
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: #ffffff;
+
+}
+
+#glow {
+  position: absolute;
+  display: flex;
+  width: 10rem;
+}
+
+.circle {
+  width: 100%;
+  height: 30px;
+  filter: blur(2rem);
+  animation: pulse_3011 4s infinite;
+  z-index: -1;
+}
+
+.circle:nth-of-type(1) {
+  background: rgba(254, 83, 186, 0.636);
+}
+
+.circle:nth-of-type(2) {
+  background: rgba(142, 81, 234, 0.704);
+}
+
+.btn:hover #container-stars {
+  z-index: 1;
+  background-color: #212121;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+}
+
+.btn:active {
+  border: double 4px #fe53bb;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: none;
+}
+
+.btn:active .circle {
+  background: #fe53bb;
+}
+
+#stars {
+  position: relative;
+  background: transparent;
+  width: 200rem;
+  height: 200rem;
+}
+
+#stars::after {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  left: -100rem;
+  width: 100%;
+  height: 100%;
+  animation: animStarRotate 90s linear infinite;
+}
+
+#stars::after {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+#stars::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 170%;
+  height: 500%;
+  animation: animStar 60s linear infinite;
+}
+
+#stars::before {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-135rem);
+  }
+}
+
+@keyframes animStarRotate {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0);
+  }
+}
+
+@keyframes gradient_301 {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulse_3011 {
+  0% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
 
 @layer base {
   * {
@@ -129,3 +369,458 @@ h1 {
   }
 }
 
+/* From Uiverse.io by Shoh2008 */ 
+.checkbox-wrapper-12 {
+  position: relative;
+}
+
+.checkbox-wrapper-12 > svg {
+  position: absolute;
+  top: -130%;
+  left: -170%;
+  width: 110px;
+  pointer-events: none;
+}
+
+.checkbox-wrapper-12 * {
+  box-sizing: border-box;
+}
+
+.checkbox-wrapper-12 input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+
+.checkbox-wrapper-12 input[type="checkbox"]:focus {
+  outline: 0;
+}
+
+.checkbox-wrapper-12 .cbx {
+  width: 24px;
+  height: 24px;
+  top: calc(100px - 12px);
+  left: calc(100px - 12px);
+}
+
+.checkbox-wrapper-12 .cbx input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #bfbfc0;
+  border-radius: 50%;
+}
+
+.checkbox-wrapper-12 .cbx label {
+  width: 24px;
+  height: 24px;
+  background: none;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: trasnlate3d(0, 0, 0);
+  pointer-events: none;
+}
+
+.checkbox-wrapper-12 .cbx svg {
+  position: absolute;
+  top: 5px;
+  left: 4px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.checkbox-wrapper-12 .cbx svg path {
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 19;
+  stroke-dashoffset: 19;
+  transition: stroke-dashoffset 0.3s ease;
+  transition-delay: 0.2s;
+}
+
+.checkbox-wrapper-12 .cbx input:checked + label {
+  animation: splash-12 0.6s ease forwards;
+}
+
+.checkbox-wrapper-12 .cbx input:checked + label + svg path {
+  stroke-dashoffset: 0;
+}
+
+@-moz-keyframes splash-12 {
+  40% {
+    background: #866efb;
+    box-shadow: 0 -18px 0 -8px #866efb, 16px -8px 0 -8px #866efb, 16px 8px 0 -8px #866efb, 0 18px 0 -8px #866efb, -16px 8px 0 -8px #866efb, -16px -8px 0 -8px #866efb;
+  }
+
+  100% {
+    background: #866efb;
+    box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+  }
+}
+
+@-webkit-keyframes splash-12 {
+  40% {
+    background: #866efb;
+    box-shadow: 0 -18px 0 -8px #866efb, 16px -8px 0 -8px #866efb, 16px 8px 0 -8px #866efb, 0 18px 0 -8px #866efb, -16px 8px 0 -8px #866efb, -16px -8px 0 -8px #866efb;
+  }
+
+  100% {
+    background: #866efb;
+    box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+  }
+}
+
+@-o-keyframes splash-12 {
+  40% {
+    background: #866efb;
+    box-shadow: 0 -18px 0 -8px #866efb, 16px -8px 0 -8px #866efb, 16px 8px 0 -8px #866efb, 0 18px 0 -8px #866efb, -16px 8px 0 -8px #866efb, -16px -8px 0 -8px #866efb;
+  }
+
+  100% {
+    background: #866efb;
+    box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+  }
+}
+
+@keyframes splash-12 {
+  40% {
+    background: #866efb;
+    box-shadow: 0 -18px 0 -8px #866efb, 16px -8px 0 -8px #866efb, 16px 8px 0 -8px #866efb, 0 18px 0 -8px #866efb, -16px 8px 0 -8px #866efb, -16px -8px 0 -8px #866efb;
+  }
+
+  100% {
+    background: #866efb;
+    box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+  }
+}
+
+.book,
+.book__pg-shadow,
+.book__pg {
+  animation: cover 5s ease-in-out infinite;
+}
+.book {
+  background-color: hsl(268, 90%, 65%);
+  border-radius: 0.25em;
+  box-shadow:
+    0 0.25em 0.5em hsla(0, 0%, 0%, 0.3),
+    0 0 0 0.25em hsl(278, 100%, 57%) inset;
+  padding: 0.25em;
+  perspective: 37.5em;
+  position: relative;
+  width: 8em;
+  height: 6em;
+  transform: translate3d(0, 0, 0);
+  transform-style: preserve-3d;
+}
+.book__pg-shadow,
+.book__pg {
+  position: absolute;
+  left: 0.25em;
+  width: calc(50% - 0.25em);
+}
+.book__pg-shadow {
+  animation-name: shadow;
+  background-image: linear-gradient(
+    -45deg,
+    hsla(0, 0%, 0%, 0) 50%,
+    hsla(0, 0%, 0%, 0.3) 50%
+  );
+  filter: blur(0.25em);
+  top: calc(100% - 0.25em);
+  height: 3.75em;
+  transform: scaleY(0);
+  transform-origin: 100% 0%;
+}
+.book__pg {
+  animation-name: pg1;
+  background-color: hsl(223, 10%, 100%);
+  background-image: linear-gradient(
+    90deg,
+    hsla(223, 10%, 90%, 0) 87.5%,
+    hsl(223, 10%, 90%)
+  );
+  height: calc(100% - 0.5em);
+  transform-origin: 100% 50%;
+}
+.book__pg--2,
+.book__pg--3,
+.book__pg--4 {
+  background-image: repeating-linear-gradient(
+      hsl(223, 10%, 10%) 0 0.125em,
+      hsla(223, 10%, 10%, 0) 0.125em 0.5em
+    ),
+    linear-gradient(90deg, hsla(223, 10%, 90%, 0) 87.5%, hsl(223, 10%, 90%));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size:
+    2.5em 4.125em,
+    100% 100%;
+}
+.book__pg--2 {
+  animation-name: pg2;
+}
+.book__pg--3 {
+  animation-name: pg3;
+}
+.book__pg--4 {
+  animation-name: pg4;
+}
+.book__pg--5 {
+  animation-name: pg5;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: hsl(223, 10%, 30%);
+    --fg: hsl(223, 10%, 90%);
+  }
+}
+
+/* Animations */
+@keyframes cover {
+  from,
+  5%,
+  45%,
+  55%,
+  95%,
+  to {
+    animation-timing-function: ease-out;
+    background-color: hsl(278, 84%, 67%);
+  }
+  10%,
+  40%,
+  60%,
+  90% {
+    animation-timing-function: ease-in;
+    background-color: hsl(271, 90%, 45%);
+  }
+}
+@keyframes shadow {
+  from,
+  10.01%,
+  20.01%,
+  30.01%,
+  40.01% {
+    animation-timing-function: ease-in;
+    transform: translate3d(0, 0, 1px) scaleY(0) rotateY(0);
+  }
+  5%,
+  15%,
+  25%,
+  35%,
+  45%,
+  55%,
+  65%,
+  75%,
+  85%,
+  95% {
+    animation-timing-function: ease-out;
+    transform: translate3d(0, 0, 1px) scaleY(0.2) rotateY(90deg);
+  }
+  10%,
+  20%,
+  30%,
+  40%,
+  50%,
+  to {
+    animation-timing-function: ease-out;
+    transform: translate3d(0, 0, 1px) scaleY(0) rotateY(180deg);
+  }
+  50.01%,
+  60.01%,
+  70.01%,
+  80.01%,
+  90.01% {
+    animation-timing-function: ease-in;
+    transform: translate3d(0, 0, 1px) scaleY(0) rotateY(180deg);
+  }
+  60%,
+  70%,
+  80%,
+  90%,
+  to {
+    animation-timing-function: ease-out;
+    transform: translate3d(0, 0, 1px) scaleY(0) rotateY(0);
+  }
+}
+@keyframes pg1 {
+  from,
+  to {
+    animation-timing-function: ease-in-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(0.4deg);
+  }
+  10%,
+  15% {
+    animation-timing-function: ease-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(180deg);
+  }
+  20%,
+  80% {
+    animation-timing-function: ease-in;
+    background-color: hsl(223, 10%, 45%);
+    transform: translate3d(0, 0, 1px) rotateY(180deg);
+  }
+  85%,
+  90% {
+    animation-timing-function: ease-in-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(180deg);
+  }
+}
+@keyframes pg2 {
+  from,
+  to {
+    animation-timing-function: ease-in;
+    background-color: hsl(223, 10%, 45%);
+    transform: translate3d(0, 0, 1px) rotateY(0.3deg);
+  }
+  5%,
+  10% {
+    animation-timing-function: ease-in-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(0.3deg);
+  }
+  20%,
+  25% {
+    animation-timing-function: ease-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(179.9deg);
+  }
+  30%,
+  70% {
+    animation-timing-function: ease-in;
+    background-color: hsl(223, 10%, 45%);
+    transform: translate3d(0, 0, 1px) rotateY(179.9deg);
+  }
+  75%,
+  80% {
+    animation-timing-function: ease-in-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(179.9deg);
+  }
+  90%,
+  95% {
+    animation-timing-function: ease-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(0.3deg);
+  }
+}
+@keyframes pg3 {
+  from,
+  10%,
+  90%,
+  to {
+    animation-timing-function: ease-in;
+    background-color: hsl(223, 10%, 45%);
+    transform: translate3d(0, 0, 1px) rotateY(0.2deg);
+  }
+  15%,
+  20% {
+    animation-timing-function: ease-in-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(0.2deg);
+  }
+  30%,
+  35% {
+    animation-timing-function: ease-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(179.8deg);
+  }
+  40%,
+  60% {
+    animation-timing-function: ease-in;
+    background-color: hsl(223, 10%, 45%);
+    transform: translate3d(0, 0, 1px) rotateY(179.8deg);
+  }
+  65%,
+  70% {
+    animation-timing-function: ease-in-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(179.8deg);
+  }
+  80%,
+  85% {
+    animation-timing-function: ease-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(0.2deg);
+  }
+}
+@keyframes pg4 {
+  from,
+  20%,
+  80%,
+  to {
+    animation-timing-function: ease-in;
+    background-color: hsl(223, 10%, 45%);
+    transform: translate3d(0, 0, 1px) rotateY(0.1deg);
+  }
+  25%,
+  30% {
+    animation-timing-function: ease-in-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(0.1deg);
+  }
+  40%,
+  45% {
+    animation-timing-function: ease-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(179.7deg);
+  }
+  50% {
+    animation-timing-function: ease-in;
+    background-color: hsl(223, 10%, 45%);
+    transform: translate3d(0, 0, 1px) rotateY(179.7deg);
+  }
+  55%,
+  60% {
+    animation-timing-function: ease-in-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(179.7deg);
+  }
+  70%,
+  75% {
+    animation-timing-function: ease-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(0.1deg);
+  }
+}
+@keyframes pg5 {
+  from,
+  30%,
+  70%,
+  to {
+    animation-timing-function: ease-in;
+    background-color: hsl(223, 10%, 45%);
+    transform: translate3d(0, 0, 1px) rotateY(0);
+  }
+  35%,
+  40% {
+    animation-timing-function: ease-in-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(0deg);
+  }
+  50% {
+    animation-timing-function: ease-in-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(179.6deg);
+  }
+  60%,
+  65% {
+    animation-timing-function: ease-out;
+    background-color: hsl(223, 10%, 100%);
+    transform: translate3d(0, 0, 1px) rotateY(0);
+  }
+}

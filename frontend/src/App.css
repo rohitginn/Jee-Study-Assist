@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap');
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -46,5 +47,9 @@ body {
 
 /* Dark theme */
 .dark body {
-  @apply bg-gray-950 text-orange-500;
+  @apply bg-neutral-950 text-orange-500;
+}
+
+@theme {
+  --font-Zen: 'Zen Dots', cursive;
 }

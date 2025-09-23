@@ -43,14 +43,26 @@ const QuestionForm = () => {
   return (
     <section
       id="questionForm"
-      className="pt-20 min-h-screen flex flex-col items-center justify-start gap-4 bg-neutral-50 dark:bg-neutral-950 px-4 transition-all duration-500"
+      className="
+        relative z-10
+        pt-20 pb-24
+        min-h-[100vh]  /* fills viewport before asking */
+        w-full
+        flex flex-col items-center
+        bg-neutral-50 dark:bg-transparent
+        px-4
+      "
     >
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-xl p-8 w-full max-w-2xl animate-fade-in"
+        className="
+          w-full max-w-2xl p-8 rounded-xl shadow-lg
+          bg-white dark:bg-gray-800
+          text-gray-800 dark:text-gray-100
+          border border-gray-200 dark:border-gray-700
+        "
       >
-
-        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800 transition-all duration-300">
+        <h1 className="text-2xl font-bold text-center mb-6 font-SUSE">
           Your JEE Question
         </h1>
 
@@ -58,79 +70,75 @@ const QuestionForm = () => {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Ask your question here..."
-          className="w-full p-4 border rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-300"
           rows="4"
           required
-        ></textarea>
+          className="
+            w-full p-4 mb-6 border rounded-lg
+            text-gray-800 dark:text-gray-100
+            bg-white dark:bg-gray-700
+            focus:outline-none focus:ring-2 focus:ring-indigo-400
+          "
+        />
 
-        <div className="flex justify-center items-center gap-6 mb-6 transition-all duration-300">
-          <label className="flex items-center gap-2 cursor-pointer hover:text-indigo-600 transition">
+        {/* Mode Selection */}
+        <div className="flex justify-center items-center gap-8 mb-6">
+          <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="radio"
               name="mode"
               value="brief"
               checked={mode === "brief"}
-              onChange={(e) => setMode(e.target.value)}
+              onChange={() => setMode("brief")}
             />
-            Brief Answer
+            <span>Brief Answer</span>
           </label>
-          <label className="flex items-center gap-2 cursor-pointer hover:text-indigo-600 transition">
+          <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="radio"
               name="mode"
               value="full"
               checked={mode === "full"}
-              onChange={(e) => setMode(e.target.value)}
+              onChange={() => setMode("full")}
             />
-            Detailed Answer
+            <span>Detailed Answer</span>
           </label>
         </div>
 
         <button
-  type="submit"
-  className="w-full py-3 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold text-lg shadow-md hover:opacity-90 transition relative"
-  disabled={loading}
->
-  {loading ? (
-    <span className="flex justify-center items-center gap-2">
-      <svg
-        className="animate-spin h-5 w-5 text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8z"
-              ></path>
-            </svg>
-            Loading...
-          </span>
-        ) : (
+          type="submit"
+          disabled={loading}
+          className="w-full py-3 rounded-lg bg-indigo-500 text-white font-semibold text-lg"
+        >
+          {loading ? (
+            <div className="flex justify-center items-center">
+              <div style={{ transform: "scale(0.5)" }}>
+                <div className="book">
+                  <div className="book__pg-shadow"></div>
+                  <div className="book__pg"></div>
+                  <div className="book__pg book__pg--2"></div>
+                  <div className="book__pg book__pg--3"></div>
+                  <div className="book__pg book__pg--4"></div>
+                  <div className="book__pg book__pg--5"></div>
+                </div>
+              </div>
+            </div>
+          ) : (
             "Ask Now"
-       )}
-      </button>
-
+          )}
+        </button>
       </form>
 
       {error && (
-        <div className="mt-6 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 w-full max-w-2xl rounded-lg animate-pulse">
+        <div className="mt-6 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 w-full max-w-2xl rounded-lg">
           {error}
         </div>
       )}
 
       {answer && (
-        <div className="mt-10 p-6 bg-white rounded-2xl shadow-lg w-full max-w-2xl transition-opacity duration-500 ease-in-out animate-fade-in">
-          <h2 className="text-xl font-semibold mb-3 text-indigo-600">Answer:</h2>
+        <div className="mt-10 p-6 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-2xl shadow-lg w-full max-w-2xl">
+          <h2 className="text-xl font-semibold mb-3 text-indigo-600">
+            Answer:
+          </h2>
           <Markdown>{String(answer)}</Markdown>
         </div>
       )}

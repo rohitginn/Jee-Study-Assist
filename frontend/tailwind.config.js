@@ -1,6 +1,13 @@
+/** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: "class",      // <-- important
-  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
-  theme: { extend: {} },
+  darkMode: 'class',
+  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {
+      fontFamily: {
+        'Zen': ['"Zen Dots"', 'cursive'], // <-- fixed
+      },
+    },
+  },
   plugins: [],
-}
+};

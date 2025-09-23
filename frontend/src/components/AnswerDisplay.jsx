@@ -1,9 +1,12 @@
+import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 const AnswerDisplay = ({ answer, loading, mode }) => {
+  const [expanded, setExpanded] = useState(false);
+
   if (loading) {
     return (
-      <div className="mt-6 text-center text-gray-500 animate-pulse">
+      <div className="mt-10 flex justify-center items-center text-gray-500 dark:text-gray-400 animate-pulse">
         Loading answer...
       </div>
     );
@@ -11,61 +14,45 @@ const AnswerDisplay = ({ answer, loading, mode }) => {
 
   if (!answer) return null;
 
-  return (
-    <div className="mt-6 p-4 border rounded-xl bg-gray-50">
-      <h2 className="text-lg font-bold mb-2">Answer:</h2>
+  // Only show first 150 chars if brief mode and not expanded
+  const displayText =
+    mode === "brief" && !expanded ? answer.slice(0, 150) + "..." : answer;
 
-      {/* Render answer based on mode */}
-      <ReactMarkdown className="text-gray-700 whitespace-pre-wrap">
-        {mode === "brief" ? answer.slice(0, 300) : answer}  {/* Show brief or full answer */}
+  return (
+    <div
+      className="
+        mt-10 w-full max-w-2xl
+        p-6
+        rounded-2xl
+        shadow-lg
+        border border-gray-200 dark:border-gray-700
+        bg-white dark:bg-gray-800
+        text-gray-800 dark:text-gray-100
+      "
+    >
+      <h2 className="text-xl font-semibold mb-4 text-indigo-600">Answer:</h2>
+
+      <ReactMarkdown className="prose prose-sm dark:prose-invert leading-relaxed">
+        {displayText}
       </ReactMarkdown>
+
+      {mode === "brief" && answer.length > 300 && (
+        <div className="flex justify-center mt-5">
+          <button
+            onClick={() => setExpanded((prev) => !prev)}
+            className="
+              px-4 py-2
+              bg-indigo-500 hover:bg-indigo-600
+              text-white rounded-lg
+              transition-colors duration-300
+            "
+          >
+            {expanded ? "View Less" : "View More"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
 
 export default AnswerDisplay;
-
-
-
-
-
-
-// import { useState } from 'react';
-
-// function AnswerDisplay({ answer }) {
-//   const [linesToShow, setLinesToShow] = useState(5);
-
-//   if (!answer) {
-//     return null;
-//   }
-
-//   // Split answer into lines
-//   const lines = answer.split('\n');
-
-//   // Only show limited lines
-//   const visibleText = lines.slice(0, linesToShow).join('\n');
-
-//   const handleViewMore = () => {
-//     if (linesToShow < 10) {
-//       setLinesToShow(10);
-//     }
-//   };
-
-//   return (
-//     <div className="p-4 bg-gray-100 rounded shadow">
-//       <h2 className="text-lg font-bold mb-2">Answer:</h2>
-//       <pre className="text-gray-800 whitespace-pre-wrap">{visibleText}</pre>
-
-//       {lines.length > linesToShow && (
-//         <button
-//           onClick={handleViewMore}
-//           className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-//         >
-//           View More
-//         </button>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default AnswerDisplay;
