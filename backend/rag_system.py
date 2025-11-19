@@ -3,25 +3,22 @@ import pickle
 import numpy as np
 import faiss
 import fitz  # PyMuPDF
-import time
 from pathlib import Path
 from tqdm import tqdm
 from dotenv import load_dotenv
 import boto3
-
 import google.generativeai as genai
-from google.generativeai import GenerativeModel
 
 # ----------------- Load Env & Configure -----------------
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # ----------------- S3 CONFIG -----------------
-S3_BUCKET = os.getenv("AWS_BUCKET_NAME")              # your bucket name
-PDF_KEYS = ["Chemistry_updated.pdf", "Physics_updated.pdf"]  # file names inside S3
+S3_BUCKET = os.getenv("AWS_BUCKET_NAME")
+PDF_KEYS = ["Chemistry_updated.pdf", "Physics_updated.pdf"]
 LOCAL_PDF_FOLDER = "./pdfs"
 
-# Create S3 client
+# S3 client
 s3 = boto3.client(
     "s3",
     aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
@@ -53,15 +50,15 @@ def download_pdfs_from_s3():
 
 # ----------------- PDF TEXT EXTRACTION -----------------
 def extract_text_from_pdf(pdf_path):
-    """Extract visible text from a PDF."""
     text = ""
     try:
         with fitz.open(pdf_path) as doc:
             for page in doc:
                 text += page.get_text("text")
+        return text
     except Exception as e:
         print(f"⚠️ Error extracting text from {pdf_path}: {e}")
-    return text
+        return ""
 
 
 # ----------------- GEMINI EMBEDDINGS -----------------
@@ -72,7 +69,7 @@ def generate_embedding(text_chunk):
             model="models/text-embedding-004",
             content=text_chunk
         )
-        return np.array(response['embedding'], dtype='float32')
+        return np.array(response["embedding"], dtype="float32")
     except Exception as e:
         print(f"⚠️ Embedding Error: {e}")
         return None
@@ -80,28 +77,21 @@ def generate_embedding(text_chunk):
 
 # ----------------- PROCESS PDFS (BUILD INDEX) -----------------
 def process_pdfs():
-    """Download PDFs, extract text, build FAISS index."""
     print("📥 Checking & downloading PDFs from S3...")
     download_pdfs_from_s3()
 
     print("⚙️ Building FAISS index...")
     text_chunks = []
 
-    # Extract and chunk
+    # Extract and chunk text
     for pdf_file in PDF_KEYS:
         pdf_path = os.path.join(LOCAL_PDF_FOLDER, pdf_file)
         print(f"📄 Processing {pdf_file} ...")
 
         text = extract_text_from_pdf(pdf_path)
-        text = text.replace("Reprint 2024-25", "").replace("\n", " ")
+        cleaned = text.replace("Reprint 2024-25", "").replace("\n", " ")
 
-        CHUNK_SIZE = 1000
-        OVERLAP = 150  # gives smoother boundaries
-
-        chunks = [
-            text[i:i + CHUNK_SIZE]
-            for i in range(0, len(text), CHUNK_SIZE - OVERLAP)
-        ]
+        chunks = [cleaned[i:i + 300] for i in range(0, len(cleaned), 300)]
         text_chunks.extend(chunks)
 
     # Batch embeddings
@@ -116,8 +106,10 @@ def process_pdfs():
                 model="models/text-embedding-004",
                 content=batch
             )
-            embeddings = [np.array(e, dtype='float32') for e in response['embedding']]
-            embeddings_list.extend(embeddings)
+            batch_embeddings = [
+                np.array(e, dtype="float32") for e in response["embedding"]
+            ]
+            embeddings_list.extend(batch_embeddings)
 
         except Exception as e:
             print(f"⚠️ Batch Error: {e}")
@@ -126,7 +118,7 @@ def process_pdfs():
         print("❌ No embeddings generated.")
         return
 
-    np_embeddings = np.array(embeddings_list, dtype='float32')
+    np_embeddings = np.array(embeddings_list, dtype="float32")
     dim = np_embeddings.shape[1]
 
     index = faiss.IndexFlatL2(dim)
@@ -140,11 +132,11 @@ def process_pdfs():
 
 
 # ----------------- RETRIEVE ANSWER -----------------
-def retrieve_answer(query, k=5, max_chars=1000):
+def retrieve_answer(query, k=3, max_chars=1000):
     try:
         index = faiss.read_index(INDEX_FILE)
         text_mapping = pickle.load(open(MAPPING_FILE, "rb"))
-    except:
+    except Exception:
         return ""
 
     query_vec = generate_embedding(query)
@@ -157,34 +149,33 @@ def retrieve_answer(query, k=5, max_chars=1000):
     return (" ".join(chunks))[:max_chars]
 
 
-# ----------------- GEMINI LLM -----------------
+# ----------------- GEMINI LLM REFINE -----------------
 def rephrase_with_gemini(text, query, mode="brief"):
+
     if mode == "brief":
         prompt = f"""
-Summarize in 5-6 lines with formulas:
+Summarize the following answer in 5–6 lines. Include formulas where needed.
 
+Extracted Answer:
 {text}
 
-Question: {query}
+User Question: {query}
 """
     else:
         prompt = f"""
-Explain in 15-17 lines with formulas:
+Explain the following answer clearly in 15–17 lines with formulas.
 
+Extracted Answer:
 {text}
 
-Question: {query}
+User Question: {query}
 """
 
     try:
-        model = GenerativeModel("gemini-2.0-flash")   # no "models/" prefix
-        response = model.generate_content(prompt)      # no api_key here
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        response = model.generate_content(prompt)
         return response.text.strip()
 
     except Exception as e:
         print("LLM ERROR:", e)
         return "⚠️ Error generating LLM response."
-
-# ----------------- MAIN (build index once) -----------------
-if __name__ == "__main__":
-    process_pdfs()
