@@ -1,8 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from rag_system import retrieve_answer, rephrase_with_gemini, PDF_FOLDER, watch_and_update_index
-import threading
+from rag_system import retrieve_answer, rephrase_with_gemini
 
 app = FastAPI(title="JEE Study Assistant", version="1.0.0")
 
@@ -16,13 +15,8 @@ app.add_middleware(
 
 class AskRequest(BaseModel):
     question: str
-    mode: str = "brief"  # brief, full, detailed
+    mode: str = "brief"  # brief, full/detailed
 
-@app.on_event("startup")
-async def start_pdf_watcher():
-    """Start background thread for PDF monitoring and FAISS rebuild."""
-    thread = threading.Thread(target=watch_and_update_index, args=(PDF_FOLDER,), daemon=True)
-    thread.start()
 
 @app.post("/ask")
 async def ask_question(req: AskRequest):
@@ -31,6 +25,7 @@ async def ask_question(req: AskRequest):
 
     if not question:
         raise HTTPException(status_code=400, detail="Question cannot be empty.")
+
     if mode not in ["brief", "full", "detailed"]:
         raise HTTPException(status_code=400, detail="Invalid mode.")
 
@@ -45,6 +40,7 @@ async def ask_question(req: AskRequest):
         "llm_answer": llm_answer,
         "mode_used": mode
     }
+
 
 @app.get("/")
 def root():
